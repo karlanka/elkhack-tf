@@ -4,9 +4,10 @@ data "aws_caller_identity" "current" {}
 # create variables used in storage integration, stage, and pipe
 locals {
   current_account_id = data.aws_caller_identity.current.account_id
-  snowflake_role_arn = "arn:aws:iam::${local.current_account_id}:role/${local.snowflake_role_name}"
   table_name_fq      = "${snowflake_database.elkhack_demo_db.name}.${snowflake_schema.elkhack_demo_schema.name}.${snowflake_table.elkhack_demo_table.name}"
   stage_name_fq      = "${snowflake_database.elkhack_demo_db.name}.${snowflake_schema.elkhack_demo_schema.name}.${snowflake_stage.elkhack_stage.name}"
+  # need to define the role arn like this to prevent circual dependency between storage integration and role (role is dependent on knowing storage external id..)
+  snowflake_role_arn = "arn:aws:iam::${local.current_account_id}:role/${local.snowflake_role_name}"
 }
 
 # storage integration, allowing snowflake aws account to communicate with our aws account
