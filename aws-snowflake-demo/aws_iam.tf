@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "assume_role_policy_document" {
   }
 }
 
-# policy document defining actions above role can do
+# policy document defining actions above role can perform
 data "aws_iam_policy_document" "snowflake_stage_policy_document" {
   statement {
     actions = [

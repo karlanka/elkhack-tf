@@ -30,12 +30,23 @@ resource "snowflake_stage" "elkhack_stage" {
 }
 
 # snowpipe loading from our bucket
+# topic needs to be created with a separate name if subscription is dropped 
+# https://docs.snowflake.com/en/user-guide/data-load-snowpipe-ts.html#snowpipe-stops-loading-files-after-amazon-sns-topic-subscription-is-deleted
 resource "snowflake_pipe" "elkhack_pipe" {
+  name              = local.snowpipe_name
   database          = snowflake_database.elkhack_demo_db.name
   schema            = snowflake_schema.elkhack_demo_schema.name
-  name              = local.snowpipe_name
   aws_sns_topic_arn = aws_sns_topic.elkhack_topic.arn
 
   copy_statement = "copy into ${local.table_name_fq} from @${local.stage_name_fq} file_format = (type = json)"
   auto_ingest    = true
+
+  # set explicit dependency with time delay, resource is implicit dependent on role and slow in creation..
+  depends_on = [time_sleep.wait_30_seconds]
+}
+
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [aws_iam_role.stage_role]
+
+  create_duration = "30s"
 }

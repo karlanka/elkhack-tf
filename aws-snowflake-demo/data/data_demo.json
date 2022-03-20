@@ -1,6 +1,6 @@
 {
     "actual_data": {
-        "some_string": "yellow_blue_green",
+        "some_string": "yellow",
         "some_int": 1,
         "some_object": {
             "another_string": "elk",

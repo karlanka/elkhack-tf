@@ -15,19 +15,33 @@ provider "aws" {
   profile = "antondev"
 }
 
-
+# create bucket
 resource "aws_s3_bucket" "demo_bucket" {
   bucket = "elkhack-simple-demo-bucket"
 }
 
-# # set up external state storage
-# terraform {
-#   backend "s3" {
-#     encrypt        = "true"
-#     bucket         = "anton-terraform-state"
-#     dynamodb_table = "anton-terraform-lock"
-#     key            = "anton-elkhacking-simple-demo.tfstate"
-#     region         = "eu-west-1"
-#     profile        = "antondev"
-#   }
-# }
+# policy to bucket allowing another account to read from it
+data "aws_iam_policy_document" "allow_access_from_another_account" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["123456789012"]
+    }
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      aws_s3_bucket.demo_bucket.arn,
+      "${aws_s3_bucket.demo_bucket.arn}/*",
+    ]
+  }
+}
+
+# attach policy
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.demo_bucket.id
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+}

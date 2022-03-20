@@ -1,16 +1,16 @@
 locals {
   # snowflake constants
-  db_name                  = "ELKHACK_DEMO_DB"
-  schema_name              = "ELKHACK_DEMO_SCHEMA"
-  table_name               = "ELKHACK_DEMO_TABLE"
-  storage_integration_name = "ELKHACK_STORAGE_INTEGRATION"
-  external_stage_name      = "ELKHACK_STAGE"
-  snowpipe_name            = "ELKHACK_DEMO_PIPE"
+  db_name                  = "DEMO_ELKHACK_DB"
+  schema_name              = "DEMO_ELKHACK_SCHEMA"
+  table_name               = "DEMO_ELKHACK_TABLE"
+  storage_integration_name = "DEMO_ELKHACK_STORAGE_INTEGRATION"
+  external_stage_name      = "DEMO_ELKHACK_STAGE"
+  snowpipe_name            = "DEMO_ELKHACK_PIPE"
 
   # aws constants
-  snowflake_role_name            = "snowflake_role"
-  stage_bucket_name              = "elkhack-stage"
-  bucket_notification_topic_name = "elkhack-topic"
+  snowflake_role_name            = "demo-snowflake-role"
+  stage_bucket_name              = "demo-elkhack-stage"
+  bucket_notification_topic_name = "demo-elkhack-topic"
 }
 
 # lock provider versions
@@ -18,7 +18,7 @@ terraform {
   required_providers {
     snowflake = {
       source  = "chanzuckerberg/snowflake"
-      version = "0.28.7"
+      version = "0.28.8"
     }
     aws = {
       source  = "hashicorp/aws"
