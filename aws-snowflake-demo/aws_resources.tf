@@ -43,8 +43,6 @@ data "aws_iam_policy_document" "sns_bucket_post_topic_policy" {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
-
-
   }
 }
 
@@ -58,7 +56,6 @@ data "aws_iam_policy_document" "sns_topic_policy" {
 
 # .. and attach to topic
 resource "aws_sns_topic_policy" "publish_topic_policy" {
-  arn = aws_sns_topic.elkhack_topic.arn
-
+  arn    = aws_sns_topic.elkhack_topic.arn
   policy = data.aws_iam_policy_document.sns_topic_policy.json
 }

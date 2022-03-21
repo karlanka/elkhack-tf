@@ -30,7 +30,7 @@ resource "snowflake_stage" "elkhack_stage" {
 }
 
 # snowpipe loading from our bucket
-# topic needs to be created with a separate name if subscription is dropped 
+# topic needs to be recreated with a different name if subscription is deleted:
 # https://docs.snowflake.com/en/user-guide/data-load-snowpipe-ts.html#snowpipe-stops-loading-files-after-amazon-sns-topic-subscription-is-deleted
 resource "snowflake_pipe" "elkhack_pipe" {
   name              = local.snowpipe_name

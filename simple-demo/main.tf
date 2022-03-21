@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-# set up provider for accessing AWS resources
+# set up provider for accessing aws resources
 # uses aws access keys in ~/.aws
 provider "aws" {
   region  = "eu-west-1"
@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["123456789012"]
+      identifiers = ["*"]
     }
 
     actions = [
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
   }
 }
 
-# attach policy
+# attach policy to bucket
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = aws_s3_bucket.demo_bucket.id
   policy = data.aws_iam_policy_document.allow_access_from_another_account.json
